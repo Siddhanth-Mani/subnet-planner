@@ -1,0 +1,11 @@
+{
+  "name": "subnet-planner",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "IPv4 subnet calculator, VLSM planner and route summariser",
+  "scripts": {
+    "test": "node --test \"test/*.test.js\""
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Subnet Planner</title>
+<meta name="description" content="IPv4 subnet calculator, VLSM planner and route summariser. Runs in the browser, no sign-up.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23245c9e'/%3E%3Cpath d='M3 4h10M3 8h6M3 12h8' stroke='white' stroke-width='1.6'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <h1>Subnet Planner</h1>
+    <p>IPv4 calculator, VLSM planner and route summariser. Everything runs in your browser.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <nav class="tabs" role="tablist" aria-label="Tools">
+    <button role="tab" id="tab-calc" aria-controls="panel-calc" aria-selected="true">Calculator</button>
+    <button role="tab" id="tab-vlsm" aria-controls="panel-vlsm" aria-selected="false">VLSM planner</button>
+    <button role="tab" id="tab-split" aria-controls="panel-split" aria-selected="false">Split</button>
+    <button role="tab" id="tab-sum" aria-controls="panel-sum" aria-selected="false">Summarise</button>
+  </nav>
+
+  <!-- Calculator -->
+  <section id="panel-calc" role="tabpanel" aria-labelledby="tab-calc">
+    <form class="row" id="calc-form" autocomplete="off">
+      <label class="grow">Address and prefix or mask
+        <input id="calc-input" spellcheck="false" placeholder="192.168.10.37/26 or 192.168.10.37 255.255.255.192" value="192.168.10.37/26">
+      </label>
+      <button type="submit">Calculate</button>
+    </form>
+    <p class="error" id="calc-error" role="alert" hidden></p>
+    <div id="calc-result"></div>
+  </section>
+
+  <!-- VLSM -->
+  <section id="panel-vlsm" role="tabpanel" aria-labelledby="tab-vlsm" hidden>
+    <p class="help">Give the address block you have and the subnets you need. The planner places the largest subnets first so every block lines up on its boundary, then shows what is left.</p>
+    <form id="vlsm-form" autocomplete="off">
+      <div class="row">
+        <label class="grow">Address block
+          <input id="vlsm-base" spellcheck="false" value="10.20.0.0/22">
+        </label>
+      </div>
+      <table class="req">
+        <thead><tr><th>Subnet name</th><th>Hosts needed</th><th><span class="sr">Remove</span></th></tr></thead>
+        <tbody id="vlsm-rows"></tbody>
+      </table>
+      <div class="row">
+        <button type="button" class="secondary" id="vlsm-add">Add subnet</button>
+        <button type="button" class="secondary" id="vlsm-example">Load example</button>
+        <span class="grow"></span>
+        <button type="submit">Plan subnets</button>
+      </div>
+    </form>
+    <p class="error" id="vlsm-error" role="alert" hidden></p>
+    <div id="vlsm-result"></div>
+  </section>
+
+  <!-- Split -->
+  <section id="panel-split" role="tabpanel" aria-labelledby="tab-split" hidden>
+    <p class="help">Divide one network into equal smaller subnets.</p>
+    <form class="row" id="split-form" autocomplete="off">
+      <label class="grow">Network
+        <input id="split-input" spellcheck="false" value="172.16.0.0/20">
+      </label>
+      <label>Split into
+        <select id="split-prefix"></select>
+      </label>
+      <button type="submit">Split</button>
+    </form>
+    <p class="error" id="split-error" role="alert" hidden></p>
+    <div id="split-result"></div>
+  </section>
+
+  <!-- Summarise -->
+  <section id="panel-sum" role="tabpanel" aria-labelledby="tab-sum" hidden>
+    <p class="help">Paste networks, one per line. You get the exact summary (the fewest routes that cover the same addresses) and the single smallest supernet that contains them all.</p>
+    <form id="sum-form" autocomplete="off">
+      <label>Networks
+        <textarea id="sum-input" rows="7" spellcheck="false">192.168.0.0/24
+192.168.1.0/24
+192.168.2.0/24
+192.168.3.0/24
+192.168.5.0/24</textarea>
+      </label>
+      <div class="row"><span class="grow"></span><button type="submit">Summarise</button></div>
+    </form>
+    <p class="error" id="sum-error" role="alert" hidden></p>
+    <div id="sum-result"></div>
+  </section>
+</main>
+
+<footer class="wrap foot">
+  <p>Built by <a href="https://siddhanth.ryzn.pro/">Siddhanth Mani</a>. <a href="https://github.com/Siddhanth-Mani/subnet-planner">Source on GitHub</a>. The link in the address bar keeps your inputs, so you can bookmark or share a plan.</p>
+</footer>
+
+<script type="module" src="src/app.js"></script>
+</body>
+</html>
